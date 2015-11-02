@@ -4,6 +4,9 @@ project(Bingo CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../../../common/cmake/)
 
+set(BingoCC_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../bingo/bingo-core-c/)
+set(Bingo_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../bingo)
+
 file (GLOB Bingo_src src/*.c*)
 file (GLOB Bingo_headers *.h src/*.h*)
 
@@ -12,8 +15,19 @@ include(ConfigureCommon)
 include_directories(${Bingo_SOURCE_DIR}
 	${Indigo_SOURCE_DIR}
 	${Indigo_SOURCE_DIR}/src
+	${BingoCC_SOURCE_DIR}
+	${BingoCC_SOURCE_DIR}/src
 	${Common_SOURCE_DIR}
-	${Common_SOURCE_DIR}/..)
+	${Common_SOURCE_DIR}/..
+	${CMAKE_CURRENT_SOURCE_DIR})
+	
+# Get defined variable with the headers
+#add_subdirectory(../../../third_party/zlib-src "${CMAKE_CURRENT_BINARY_DIR}/zlib")
+get_directory_property(ZLib_HEADERS_DIR DIRECTORY ../../../third_party/zlib-src DEFINITION ZLib_HEADERS_DIR)
+
+add_subdirectory(../../../bingo/bingo-core "${CMAKE_CURRENT_BINARY_DIR}/bingo-core")
+add_subdirectory(../../../bingo/bingo-core-c "${CMAKE_CURRENT_BINARY_DIR}/bingo-core-c")
+
 include(DefineTest)
 
 # Bingo static
@@ -60,7 +74,7 @@ if(MSVC)
 endif()
 
 if (MSVC OR MINGW)
-	target_link_libraries(bingo-shared indigo-shared)
+	target_link_libraries(bingo-shared indigo-shared bingo-core-c bingo-core z tinyxml)
 endif()
 set_property(TARGET bingo-shared PROPERTY LINK_INTERFACE_LIBRARIES "")
 set_property(TARGET bingo-shared PROPERTY FOLDER "bingo")

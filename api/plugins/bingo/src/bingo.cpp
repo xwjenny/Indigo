@@ -178,6 +178,23 @@ CEXPORT int bingoCloseDatabase (int db)
    BINGO_END(-1);
 }
 
+CEXPORT int bingoIndexStructures(int molecules, const char *properties)
+{
+	INDIGO_BEGIN
+	{
+		return 0;
+	}
+	INDIGO_END(-1);
+}
+CEXPORT int bingoMatchStructures(int query, int molecules, const char *properties)
+{
+	INDIGO_BEGIN
+	{
+		return 0;
+	}
+	INDIGO_END(-1);
+}
+
 CEXPORT int bingoInsertRecordObj (int db, int obj)
 {
    BINGO_BEGIN_DB(db)
