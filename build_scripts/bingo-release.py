@@ -91,7 +91,10 @@ if args.dbms != 'sqlserver':
         args.params += " -DCMAKE_BUILD_TYPE=" + args.config
 
     os.chdir(full_build_dir)
-    command = "%s cmake -G \"%s\" %s %s" % ('CC=gcc CXX=g++' if (args.preset.find('linux') != -1 and args.preset.find('universal') != -1) else '', args.generator, args.params, project_dir)
+    prefix = ''
+    if (args.preset.find('linux') != -1 and args.preset.find('universal') != -1):
+        prefix = 'CC=gcc CXX=g++'
+    command = "%s cmake -G \"%s\" %s %s" % (prefix, args.generator, args.params, project_dir)
     print(command)
     subprocess.check_call(command, shell=True)
 
