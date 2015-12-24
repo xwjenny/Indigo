@@ -96,7 +96,7 @@ if args.dbms != 'sqlserver':
         prefix = 'CC=gcc CXX=g++'
     command = "%s cmake -G \"%s\" %s %s" % (prefix, args.generator, args.params, project_dir)
     print(command)
-    subprocess.check_call(command, shell=True)
+    subprocess.call(command, shell=True)
 
     if args.nobuild:
         exit(0)
@@ -106,17 +106,17 @@ if args.dbms != 'sqlserver':
         if ext == ".zip":
             os.remove(join(full_build_dir, f))
 
-    subprocess.check_call("cmake --build . --config %s" % args.config, shell=True)
+    subprocess.call("cmake --build . --config %s" % args.config, shell=True)
 
     if args.generator.find("Unix Makefiles") != -1:
-        subprocess.check_call("make package", shell=True)
-        subprocess.check_call("make install", shell=True)
+        subprocess.call("make package", shell=True)
+        subprocess.call("make install", shell=True)
     elif args.generator.find("Xcode") != -1:
-        subprocess.check_call("cmake --build . --target package --config %s" % args.config, shell=True)
-        subprocess.check_call("cmake --build . --target install --config %s" % args.config, shell=True)
+        subprocess.call("cmake --build . --target package --config %s" % args.config, shell=True)
+        subprocess.call("cmake --build . --target install --config %s" % args.config, shell=True)
     elif args.generator.find("Visual Studio") != -1:
-        subprocess.check_call("cmake --build . --target PACKAGE --config %s" % args.config, shell=True)
-        subprocess.check_call("cmake --build . --target INSTALL --config %s" % args.config, shell=True)
+        subprocess.call("cmake --build . --target PACKAGE --config %s" % args.config, shell=True)
+        subprocess.call("cmake --build . --target INSTALL --config %s" % args.config, shell=True)
     else:
         print("Do not know how to run package and install target")
 
@@ -136,7 +136,7 @@ if args.dbms != 'sqlserver':
             for root, dirs, files in os.walk('.'):
                 for file in files:
                     if file.endswith('.sh') or file.endswith('.bat'):
-                        os.chmod(join(root, file), 0o755)
+                        os.chmod(join(root, file), 493) # o755 = d493
                     zf.write(join(root, file))
             os.chdir(root)
 else:
@@ -163,7 +163,7 @@ else:
         os.chdir(full_build_dir)
         command = "cmake -G \"%s\" %s %s" % (generator, args.params, project_dir)
         print(command)
-        subprocess.check_call(command, shell=True)
+        subprocess.call(command, shell=True)
 
         if args.nobuild:
             exit(0)
@@ -173,12 +173,12 @@ else:
             if ext == ".zip":
                 os.remove(join(full_build_dir, f))
 
-        subprocess.check_call("cmake --build . --config %s" % args.config, shell=True)
+        subprocess.call("cmake --build . --config %s" % args.config, shell=True)
 
     os.chdir(join(root, 'bingo', 'sqlserver'))
     command = 'msbuild /t:Rebuild /p:Configuration=%s /property:DllPath32=%s /property:DllPath64=%s' % (args.config, dllPath['x86'], dllPath['x64'])
     print(os.path.abspath(os.curdir), command)
-    subprocess.check_call(command)
+    subprocess.call(command)
 
     os.chdir(root)
     if not os.path.exists("dist"):
