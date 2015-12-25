@@ -10,7 +10,7 @@ from zipfile import ZipFile
 
 def shortenDBMS(dbms):
     if dbms == 'postgres':
-        return 'pg'
+        return 'pg' + os.environ['BINGO_PG_VERSION']
     elif dbms == 'sqlserver':
         return 'mssql'
     elif dbms == 'oracle':
@@ -44,7 +44,7 @@ presets = {
     "mac10.7" : ("Xcode", "-DSUBSYSTEM_NAME=10.7"),
     "mac10.8" : ("Xcode", "-DSUBSYSTEM_NAME=10.8"),
     "mac10.9" : ("Xcode", "-DSUBSYSTEM_NAME=10.9"),
-    "mac-universal" : ("Unix Makefiles", "-DSUBSYSTEM_NAME=10.6"),
+    "mac-universal" : ("Unix Makefiles", "-DSUBSYSTEM_NAME=10.7"),
 }
 
 parser = OptionParser(description='Bingo build script')
@@ -78,6 +78,7 @@ root = os.path.normpath(join(cur_dir, ".."))
 project_dir = join(cur_dir, "bingo-%s" % args.dbms)
 
 if args.dbms != 'sqlserver':    
+    print(args.dbms, args.generator, args.config, args.params, shortenDBMS(args.dbms), shortenGenerator(args.generator))
     build_dir = (shortenDBMS(args.dbms) + " " + shortenGenerator(args.generator) + " " + args.config + args.params.replace('-D', ''))
     build_dir = build_dir.replace(" ", "_").replace("=", "_").replace("-", "_")
     full_build_dir = os.path.join(root, "build", build_dir)
@@ -128,9 +129,21 @@ if args.dbms != 'sqlserver':
     for f in os.listdir(full_build_dir):
         path, ext = os.path.splitext(f)
         if ext == ".zip":
-            shutil.rmtree(join(full_build_dir, f.replace('-shared.zip', ''), f.replace('-shared.zip', '')), ignore_errors=True)
+            extdir = join(full_build_dir, f.replace('-shared.zip', ''), f.replace('-shared.zip', ''))
+            shutil.rmtree(extdir, ignore_errors=True)
+            os.makedirs(extdir)
             zf = ZipFile(join(full_build_dir, f))
-            zf.extractall(join(full_build_dir, f.replace('-shared.zip', ''), f.replace('-shared.zip', '')))
+            for name in zf.namelist():
+                (dirname, filename) = os.path.split(name)
+                if filename == '': 
+                    if not os.path.exists(join(extdir, dirname)):
+                        os.makedirs(join(extdir, dirname))
+                else:
+                    fd = open(join(extdir, dirname, filename), 'wb')
+                    fd.write(zf.read(name))
+                    fd.close()
+            zf.close()    
+            #zf.extractall(join(full_build_dir, f.replace('-shared.zip', ''), f.replace('-shared.zip', '')))
             zf = ZipFile(join(dist_dir, f.replace('-shared.zip', '.zip')), 'w')
             os.chdir(join(full_build_dir, f.replace('-shared.zip', '')))
             for root, dirs, files in os.walk('.'):
