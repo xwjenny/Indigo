@@ -154,6 +154,8 @@ CEXPORT int bingoSetConfigInt (const char *name, int value)
          self.bingo_context->zero_unknown_aromatic_hydrogens = (value != 0);
       else if (strcasecmp(name, "reject-invalid-structures") == 0 || strcasecmp(name, "reject_invalid_structures") == 0)
          self.bingo_context->reject_invalid_structures = (value != 0);
+	  else if (strcasecmp(name, "no-cmf-vocabulary") == 0 || strcasecmp(name, "no_cmf_vocabulary") == 0)
+		  self.bingo_context->no_cmf_vocabulary = (value != 0);
       else
       {
          bool set = true;

@@ -94,14 +94,19 @@ void MangoIndex::prepare (Scanner &molfile, Output &output,
       // requires exclusive access for this
       OsLockerNullable locker(lock_for_exclusive_access);
 
-      CmfSaver saver(_context->cmf_dict, output_cmf);
+      Obj<CmfSaver> saver;
 
-      saver.saveMolecule(mol);
+      if (_context->no_cmf_vocabulary)
+         saver.create(output_cmf);
+      else
+         saver.create(_context->cmf_dict, output_cmf);
+
+      saver->saveMolecule(mol);
       
       if (mol.have_xyz)
       {
          ArrayOutput output_xyz(_xyz);
-         saver.saveXyz(output_xyz);
+         saver->saveXyz(output_xyz);
       }
       else
          _xyz.clear();

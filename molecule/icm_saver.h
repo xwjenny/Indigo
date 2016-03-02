@@ -28,7 +28,9 @@ public:
    static const char *VERSION1, *VERSION2;
    static bool checkVersion (const char *prefix);
 
-   explicit IcmSaver (Output &output);
+   DLLEXPORT explicit IcmSaver (Output &output);
+
+   DLLEXPORT void saveMolecule (const char *cmf, int cmf_len, const char *xyz, int xyz_len);
 
    void saveMolecule (Molecule &mol);
 

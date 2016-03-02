@@ -62,6 +62,13 @@ public:
 
    const byte * getQueryFingerprint ();
 
+   ObjArray< Array<int> > & getQueryMapping();
+
+   Array<int> & getQueryMolMapping();
+
+   QueryReaction & getQuery();
+   Reaction & getTarget();
+
    DECL_ERROR;
 protected:
 
@@ -74,6 +81,8 @@ protected:
    ReactionAtomNeighbourhoodCounters _nei_query_counters;
 
    ObjArray< Array<int> > _target_bond_types;
+   Array<int> _query_mol_mapping;
+   ObjArray< Array<int> > _query_mapping;
 
    Array<byte> _query_fp;
    bool        _query_data_valid;

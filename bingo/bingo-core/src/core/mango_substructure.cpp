@@ -187,6 +187,10 @@ bool MangoSubstructure::matchLoadedTarget ()
    {
       profIncTimer("match.embedding_not_found", profTimerGetTime(temb));
    }
+
+   _query_mapping.copy(matcher.getQueryMapping(), _query.vertexEnd());
+   _target_mapping.copy(matcher.getTargetMapping(), _target.vertexEnd());
+   
    return res;
 }
 
@@ -301,6 +305,26 @@ bool MangoSubstructure::needCoords ()
    return MoleculeSubstructureMatcher::needCoords(match_3d, _query);
 }
 
+Array<int> & MangoSubstructure::getQueryMapping()
+{
+	return _query_mapping;
+}
+
+Array<int> & MangoSubstructure::getTargetMapping()
+{
+	return _target_mapping;
+}
+
+QueryMolecule & MangoSubstructure::getQuery()
+{
+	return _query;
+}
+
+Molecule & MangoSubstructure::getTarget() 
+{
+	return _target;
+}
+
 bool MangoSubstructure::matchBinary (const Array<char> &target_buf, const Array<char> *xyz_buf)
 {
    BufferScanner scanner(target_buf);
@@ -320,8 +344,12 @@ bool MangoSubstructure::matchBinary (Scanner &scanner, Scanner *xyz_scanner)
    profTimerStart(tcmf, "match.cmf");
 
    cmf_loader.free();
-   cmf_loader.create(_context.cmf_dict, scanner);
 
+   if (_context.no_cmf_vocabulary)
+	   cmf_loader.create(scanner);
+   else
+	   cmf_loader.create(_context.cmf_dict, scanner);
+   
    if (!_query_has_stereocare_bonds)
       cmf_loader->skip_cistrans = true;
    if (!_query_has_stereocenters)

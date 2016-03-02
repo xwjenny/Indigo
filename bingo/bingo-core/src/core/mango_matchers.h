@@ -59,6 +59,12 @@ public:
 
    bool needCoords ();
 
+   Array<int> & getQueryMapping();
+   Array<int> & getTargetMapping();
+
+   QueryMolecule & getQuery();
+   Molecule & getTarget();
+
    // parameters to pass to MoleculeSubstructureMatcher
    int   match_3d;
    float rms_threshold;
@@ -75,6 +81,8 @@ protected:
    Molecule _target;
    QueryMolecule _query;
    Array<int>  _target_bond_types;
+   Array<int>  _query_mapping;
+   Array<int>  _target_mapping;
    Array<byte> _query_fp;
    bool _use_pi_systems_matcher;
    MoleculeAtomNeighbourhoodCounters _nei_target_counters;

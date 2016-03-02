@@ -29,7 +29,9 @@ public:
 
    static bool checkVersion (const char *prefix);
 
-   explicit IcrSaver (Output &output);
+   DLLEXPORT explicit IcrSaver (Output &output);
+
+   DLLEXPORT void saveReaction (const char *crf, int crf_len);
 
    void saveReaction (Reaction &reaction);
 

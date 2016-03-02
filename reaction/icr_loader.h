@@ -22,7 +22,7 @@ namespace indigo {
 class Scanner;
 class Reaction;
 
-class IcrLoader
+class DLLEXPORT IcrLoader
 {
 public:
 

@@ -31,7 +31,13 @@ public:
 
    static Scanner & get (IndigoObject &obj);
 
+   void toString(Array<char> &str);
+
    virtual ~IndigoScanner ();
+
+   IndigoScanner * cloneFrom(IndigoObject & obj);
+
+   virtual IndigoObject * clone ();
 
    Scanner *ptr;
 protected:

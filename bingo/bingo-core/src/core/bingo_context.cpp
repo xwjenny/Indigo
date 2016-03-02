@@ -42,6 +42,7 @@ BingoContext::BingoContext (int id_)
    allow_non_unique_dearomatization.setName("allow-non-unique-dearomatization");
    zero_unknown_aromatic_hydrogens.setName("zero-unknown-aromatic-hydrogens");
    reject_invalid_structures.setName("reject-invalid-structures");
+   no_cmf_vocabulary.setName("no_cmf_vocabulary");
 }
 
 void BingoContext::reset ()
@@ -64,6 +65,7 @@ void BingoContext::reset ()
    allow_non_unique_dearomatization.reset();
    zero_unknown_aromatic_hydrogens.reset();
    reject_invalid_structures.reset();
+   no_cmf_vocabulary.reset();
 }
 
 BingoContext::~BingoContext ()

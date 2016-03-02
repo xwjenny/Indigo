@@ -16,7 +16,7 @@
 #define __indigo_bingo__
 
 #include "indigo.h"
-#include "bingo_core_c.h"
+#include "../bingo/bingo-core-c/src/bingo_core_c.h"
 
 CEXPORT const char * bingoVersion ();
 
@@ -29,8 +29,13 @@ CEXPORT int bingoCloseDatabase (int db);
 //
 // Bingo core batch processing
 //
-CEXPORT int bingoIndexStructures(int molecules, const char *properties);
-CEXPORT int bingoMatchStructures(int query, int molecules, const char *properties);
+CEXPORT int bingoCreateBuffer(const byte *buf, int size);
+CEXPORT int bingoCreateBufferFromString(const char *str);
+
+CEXPORT int bingoIndexStructures(int structures, const char *properties);
+CEXPORT int bingoMatchStructures(const char *query, int index_array, const char *properties);
+
+CEXPORT int bingoIsMatched(int bingo_mapping);
 
 //
 // Record insertion/deletion

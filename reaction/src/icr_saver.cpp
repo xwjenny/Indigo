@@ -37,6 +37,23 @@ IcrSaver::IcrSaver (Output &output) : _output(output)
    save_ordering = false;
 }
 
+void IcrSaver::saveReaction (const char *crf, int crf_len)
+{
+	_output.writeString(VERSION2);
+
+	int features = 0;
+
+	if (save_xyz)
+		features |= ICM_XYZ;
+
+	if (save_bond_dirs)
+		features |= ICM_BOND_DIRS;
+
+	_output.writeChar(features);
+
+	_output.write(crf, crf_len);
+}
+
 void IcrSaver::saveReaction (Reaction &reaction)
 {
    _output.writeString(VERSION2);

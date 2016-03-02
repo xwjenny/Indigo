@@ -20,7 +20,11 @@
 #include "indigo_molecule.h"
 #include "indigo_reaction.h"
 #include "indigo_cpp.h"
+#include "indigo_array.h"
+
 #include "bingo_internal.h"
+
+#include "bingo_mapping_obj.h"
 
 #include "bingo_index.h"
 #include "bingo_lock.h"
@@ -33,6 +37,9 @@
 #include "base_cpp/auto_ptr.h"
 #include "base_cpp/exception.h"
 #include "base_cpp/os_sync_wrapper.h"
+
+#include "src\mango_handler.h"
+#include "src\ringo_handler.h"
 
 using namespace indigo;
 using namespace bingo;
@@ -178,19 +185,86 @@ CEXPORT int bingoCloseDatabase (int db)
    BINGO_END(-1);
 }
 
-CEXPORT int bingoIndexStructures(int molecules, const char *properties)
+CEXPORT int bingoCreateBuffer(const byte *buf, int size)
 {
 	INDIGO_BEGIN
 	{
-		return 0;
+		return self.addObject(new BingoBuffer(buf, size));
 	}
 	INDIGO_END(-1);
 }
-CEXPORT int bingoMatchStructures(int query, int molecules, const char *properties)
+
+CEXPORT int bingoCreateBufferFromString(const char *str)
 {
 	INDIGO_BEGIN
 	{
-		return 0;
+		return self.addObject(new BingoBuffer(str));
+	}
+	INDIGO_END(-1);
+}
+
+CEXPORT int bingoIndexStructures(int structures, const char *properties)
+{
+	INDIGO_BEGIN
+	{ 
+		IndigoArray &structures_array = IndigoArray::cast(self.getObject(structures));
+
+		AutoPtr<BingoHandler> bingo_handler_ptr;
+
+		if ((properties != 0) && (strcasecmp(properties, "reactions") == 0 || strcasecmp(properties, "reaction") == 0))
+			bingo_handler_ptr.reset(new RingoHandler());
+		else
+			bingo_handler_ptr.reset(new MangoHandler());
+
+		indigo::ObjArray<BingoIndexData> & output_data = bingo_handler_ptr->indexStructures(structures_array.objects);
+
+		int out_array = indigoCreateArray();
+		
+		for (int i = 0; i < output_data.size(); i++)
+		{
+			indigoArrayAdd(out_array, self.addObject(output_data[i].clone()));
+		}
+
+		return out_array;
+	}
+	INDIGO_END(-1);
+}
+
+CEXPORT int bingoMatchStructures(const char *query, int index_array, const char *properties)
+{
+	INDIGO_BEGIN
+	{
+		AutoPtr<BingoHandler> bingo_handler_ptr;
+
+		if ((properties != 0) && (strcasecmp(properties, "reactions") == 0 || strcasecmp(properties, "reaction") == 0))
+			bingo_handler_ptr.reset(new RingoHandler());
+		else
+			bingo_handler_ptr.reset(new MangoHandler());
+		
+		IndigoArray &index_data_array = IndigoArray::cast(self.getObject(index_array));
+
+		bingo_handler_ptr->setupMatch("sub", query, "");
+
+		int res = indigoCreateArray();
+		indigo::PtrArray<IndigoObject>& index_datas = index_data_array.objects;
+		for (int i = 0; i < index_datas.size(); i++)
+		{
+			BingoIndexData * data = (BingoIndexData *)index_datas.at(i);
+			
+			indigoArrayAdd(res, self.addObject(bingo_handler_ptr->matchStructure(data)));
+		}
+		return res;
+	}
+	INDIGO_END(-1);
+}
+
+CEXPORT int bingoIsMatched(int bingo_mapping)
+{
+	INDIGO_BEGIN
+	{
+		BingoMappingObj &bingo_mapping_obj = (BingoMappingObj &)self.getObject(bingo_mapping);
+
+		return (int)bingo_mapping_obj.isMatched();
 	}
 	INDIGO_END(-1);
 }

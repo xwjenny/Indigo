@@ -37,6 +37,26 @@ IcmSaver::IcmSaver (Output &output) : _output(output)
    save_ordering = false;
 }
 
+void IcmSaver::saveMolecule (const char *cmf, int cmf_len, const char *xyz, int xyz_len)
+{
+   _output.writeString(VERSION2);
+
+   int features = 0;
+
+   if (save_xyz)
+      features |= ICM_XYZ;
+
+   if (save_bond_dirs)
+      features |= ICM_BOND_DIRS;
+
+   _output.writeChar(features);
+
+   _output.write(cmf, cmf_len);
+
+   if (save_xyz && (xyz != 0) && (xyz_len > 0))
+      _output.write(xyz, xyz_len);
+}
+
 void IcmSaver::saveMolecule (Molecule &mol)
 {
    _output.writeString(VERSION2);

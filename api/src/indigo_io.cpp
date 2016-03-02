@@ -35,6 +35,19 @@ IndigoScanner::IndigoScanner (const char *buf, int size) : IndigoObject(SCANNER)
    ptr = new BufferScanner(_buf);
 }
 
+IndigoScanner * IndigoScanner::cloneFrom(IndigoObject & obj)
+{
+	IndigoScanner & other_data = (IndigoScanner &)obj;
+
+	AutoPtr<IndigoScanner> data_ptr(new IndigoScanner(other_data.ptr));
+
+	return data_ptr.release();
+}
+
+IndigoObject * IndigoScanner::clone() {
+	return cloneFrom(*this);
+}
+
 IndigoScanner::~IndigoScanner ()
 {
    if (ptr != 0) // can be zero after indigoClose()
@@ -46,6 +59,11 @@ Scanner & IndigoScanner::get (IndigoObject &obj)
    if (obj.type == SCANNER)
       return *((IndigoScanner &)obj).ptr;
    throw IndigoError("%s is not a scanner", obj.debugInfo());
+}
+
+void IndigoScanner::toString(Array<char> &str)
+{
+	return str.copy(_buf);
 }
 
 IndigoOutput::IndigoOutput (Output *output) : IndigoObject(OUTPUT), ptr(output)

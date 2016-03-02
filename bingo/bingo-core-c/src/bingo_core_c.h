@@ -130,6 +130,8 @@ CEXPORT int mangoMatchTarget (const char *target, int target_buf_len);
 CEXPORT int mangoMatchTargetBinary (const char *target_bin, int target_bin_len,
                                     const char *target_xyz, int target_xyz_len);
 
+CEXPORT int mangoGetMapping (int **mapping, int *mapping_len);
+
 CEXPORT int mangoLoadTargetBinaryXyz (const char *target_xyz, int target_xyz_len);
 CEXPORT int mangoSetHightlightingMode (int enable);
 CEXPORT const char* mangoGetHightlightedMolecule ();
@@ -171,12 +173,18 @@ CEXPORT int ringoSetupMatch (const char *search_type, const char *query, const c
 //  -1 if something is bad with the target ("quiet" error)
 //  -2 if some other thing is bad ("sound" error)
 CEXPORT int ringoMatchTarget (const char *target, int target_buf_len);
+
 // Return value:
 //   1 if the query is a substructure of the taret
 //   0 if it is not
 //  -1 if something is bad with the target ("quiet" error)
 //  -2 if some other thing is bad ("sound" error)
 CEXPORT int ringoMatchTargetBinary (const char *target_bin, int target_bin_len);
+
+CEXPORT int ringoGetMapping (int mol_id, int **mapping, int *mapping_len);
+
+CEXPORT int ringoGetMolMapping (int **mol_mapping, int *mol_mapping_len);
+
 CEXPORT const char * ringoRSMILES (const char *target_buf, int target_buf_len);
 CEXPORT const char * ringoRxnfile (const char *reaction, int reaction_len);
 CEXPORT const char * ringoRCML (const char *reaction, int reaction_len);

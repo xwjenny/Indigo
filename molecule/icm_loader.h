@@ -22,7 +22,7 @@ namespace indigo {
 class Scanner;
 class Molecule;
 
-class IcmLoader
+class DLLEXPORT IcmLoader
 {
 public:
 

@@ -446,6 +446,18 @@ CEXPORT int mangoMatchTargetBinary (const char *target_bin, int target_bin_len,
    BINGO_END(-2, -2)
 }
 
+CEXPORT int mangoGetMapping(int **mapping, int *mapping_len)
+{
+   BINGO_BEGIN
+   {
+      MangoSubstructure &substructure = self.mango_context->substructure;
+
+      *mapping = substructure.getQueryMapping().ptr();
+      *mapping_len = substructure.getQueryMapping().size();
+   }
+   BINGO_END(-2, -2)
+}
+
 CEXPORT int mangoLoadTargetBinaryXyz (const char *target_xyz, int target_xyz_len)
 {
    profTimerStart(t0, "match.match_target_binary");

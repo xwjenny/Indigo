@@ -174,8 +174,20 @@ bool RingoSubstructure::matchBinary (Scanner &scanner)
    if (_smarts)
       rsm.use_daylight_aam_mode = true;
    //rsm.setNeiCounters(&_nei_query_counters, &_nei_target_counters);
+   bool res = rsm.find();
 
-   return rsm.find();
+   _query_mol_mapping.clear_resize(_query_reaction.end());
+   _query_mol_mapping.fill(-1);
+   _query_mapping.clear();
+   _query_mapping.resize(_query_reaction.end());
+   for (int i = _query_reaction.begin(); i != _query_reaction.end(); i = _query_reaction.next(i))
+   {
+	   _query_mapping[i].copy(rsm.getQueryMoleculeMapping(i), _query_reaction.getQueryMolecule(i).vertexEnd());
+   
+	   _query_mol_mapping[i] = rsm.getTargetMoleculeIndex(i);
+   }
+
+   return res;
 }
 
 void RingoSubstructure::loadTarget (const Array<char> &buf)
@@ -239,4 +251,24 @@ const byte * RingoSubstructure::getQueryFingerprint ()
 {
    _validateQueryData();
    return _query_fp.ptr();
+}
+
+ObjArray< Array<int> > & RingoSubstructure::getQueryMapping()
+{
+	return _query_mapping;
+}
+
+Array<int> & RingoSubstructure::getQueryMolMapping()
+{
+	return _query_mol_mapping;
+}
+
+QueryReaction & RingoSubstructure::getQuery()
+{
+	return _query_reaction;
+}
+
+Reaction & RingoSubstructure::getTarget()
+{
+	return _target_reaction;
 }

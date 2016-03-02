@@ -232,6 +232,32 @@ CEXPORT int ringoMatchTargetBinary (const char *target_bin, int target_bin_len)
    BINGO_END(-2, -2)
 }
 
+CEXPORT int ringoGetMapping(int mol_id, int ** mapping, int* mapping_len)
+{
+   BINGO_BEGIN
+   {
+      RingoSubstructure &substructure = self.ringo_context->substructure;
+      ObjArray< Array<int> > & query_mapping = substructure.getQueryMapping();
+
+      *mapping = query_mapping[mol_id].ptr();
+      *mapping_len = query_mapping[mol_id].size();
+   }
+   BINGO_END(-2, -2)
+}
+
+CEXPORT int ringoGetMolMapping(int ** mol_mapping, int* mol_mapping_len)
+{
+   BINGO_BEGIN
+   {
+      RingoSubstructure &substructure = self.ringo_context->substructure;
+      Array<int> & query_mol_mapping = substructure.getQueryMolMapping();
+
+      *mol_mapping = query_mol_mapping.ptr();
+      *mol_mapping_len = query_mol_mapping.size();
+   }
+   BINGO_END(-2, -2)
+}
+
 CEXPORT const char * ringoRSMILES (const char *target_buf, int target_buf_len)
 {
    profTimerStart(t0, "rsmiles");

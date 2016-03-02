@@ -71,6 +71,8 @@ public:
    // Throw exception when invalid structure is being added to the index
    Nullable<bool> reject_invalid_structures;
 
+   Nullable<bool> no_cmf_vocabulary;
+
    MoleculeFingerprintParameters fp_parameters;
 
    PtrArray<TautomerRule> tautomer_rules;

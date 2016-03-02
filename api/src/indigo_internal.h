@@ -146,7 +146,9 @@ public:
       TAUTOMER_ITER,
       TAUTOMER_MOLECULE,
       TGROUP,
-      TGROUPS_ITER
+      TGROUPS_ITER,
+	  BINGO_INDEXDATA,
+	  BINGO_MAPPING
    };
 
    int type;
