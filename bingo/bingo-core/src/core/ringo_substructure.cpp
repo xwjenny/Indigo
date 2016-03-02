@@ -163,9 +163,14 @@ bool RingoSubstructure::matchBinary (const Array<char> &buf)
 
 bool RingoSubstructure::matchBinary (Scanner &scanner)
 {
-   CrfLoader loader(_context.cmf_dict, scanner);
+   Obj<CrfLoader> loader;
 
-   loader.loadReaction(_target_reaction);
+   if (_context.no_cmf_vocabulary)
+      loader.create(scanner);
+   else
+      loader.create(_context.cmf_dict, scanner);
+
+   loader->loadReaction(_target_reaction);
    _initTarget(true);
 
    ReactionSubstructureMatcher rsm(_target_reaction);

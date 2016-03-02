@@ -63,9 +63,17 @@ void RingoIndex::prepare (Scanner &rxnfile, Output &output, OsLock *lock_for_exc
    {
       // CrfSaver modifies _context->cmf_dict and 
       // requires exclusive access for this
+
       OsLockerNullable locker(lock_for_exclusive_access);
-      CrfSaver saver(_context->cmf_dict, output_crf);
-      saver.saveReaction(reaction);
+      
+      Obj<CrfSaver> saver;
+
+      if (_context->no_cmf_vocabulary)
+         saver.create(output_crf);
+      else
+         saver.create(_context->cmf_dict, output_crf);
+
+      saver->saveReaction(reaction);
    }
 
    output.writeArray(_crf);

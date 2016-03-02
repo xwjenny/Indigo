@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "ringo_handler.h"
 #include "bingo_core_c.h"
 #include "bingo_mapping_obj.h"
@@ -15,7 +17,10 @@ void RingoHandler::setupMatch(const char *search_type, const char *query, const 
 
 	_query = &((IndigoQueryReaction &)self.getObject(query_id)).getQueryReaction();
 
-	ringoSetupMatch(search_type, query, options);
+   char r_search_type[10] = "R";
+   strcat(r_search_type, search_type);
+
+   ringoSetupMatch(r_search_type, query, options);
 }
 
 IndigoObject * RingoHandler::matchStructure(IndigoObject * index_data)
@@ -24,7 +29,7 @@ IndigoObject * RingoHandler::matchStructure(IndigoObject * index_data)
 
 	indigo::Array<byte> & icr = data->getIcm();
 
-	int res = ringoMatchTargetBinary((const char *)icr.ptr(), icr.size());
+	int res = ringoMatchTarget((const char *)icr.ptr(), icr.size());
 
 	int target = _loadCrfReaction(icr.ptr(), icr.size());
 
@@ -73,7 +78,7 @@ bool RingoHandler::_readPreparedInfo(int* id, int fp_size)
 	ArrayOutput array_output(icr);
 	IcrSaver icr_saver(array_output);
 
-	icr_saver.save_xyz = true;
+	//icr_saver.save_xyz = true;
 	icr_saver.save_bond_dirs = true;
 
 	icr_saver.saveReaction(crf_buf, crf_len);

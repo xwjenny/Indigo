@@ -66,8 +66,10 @@ bool MangoHandler::_readPreparedInfo(int* id, int fp_size)
 	ArrayOutput array_output(icm);
 	IcmSaver icm_saver(array_output);
 
-	//icm_saver.save_xyz = true;
-	//icm_saver.save_bond_dirs = true;
+   if ((xyz_buf != 0) && (xyz_len > 0))
+	   icm_saver.save_xyz = true;
+
+	icm_saver.save_bond_dirs = true;
 
 	icm_saver.saveMolecule(cmf_buf, cmf_len, xyz_buf, xyz_len);
 
