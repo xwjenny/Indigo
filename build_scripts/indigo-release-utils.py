@@ -84,7 +84,7 @@ if (args.preset.find('linux') != -1 or args.preset.find('universal') != -1):
     cmake_build_prefix = 'CC=gcc CXX=g++'     
 command = "%s cmake -G \"%s\" %s %s" % (cmake_build_prefix, args.generator, args.params, project_dir)
 print(command)
-subprocess.check_call(command, shell=True)
+subprocess.call(command, shell=True)
 
 if args.nobuild:
     exit(0)
@@ -98,16 +98,16 @@ command = "cmake --build . --config %s" % (args.config)
 print(command)
 subprocess.call(command, shell=True)
 if args.generator.find("Unix Makefiles") != -1:
-    subprocess.check_call("make package", shell=True)
+    subprocess.call("make package", shell=True)
 elif args.generator.find("Xcode") != -1:
-    subprocess.check_call("cmake --build . --target package --config %s" % (args.config), shell=True)
+    subprocess.call("cmake --build . --target package --config %s" % (args.config), shell=True)
 elif args.generator.find("Visual Studio") != -1:
-    subprocess.check_call("cmake --build . --target PACKAGE --config %s" % (args.config), shell=True)
+    subprocess.call("cmake --build . --target PACKAGE --config %s" % (args.config), shell=True)
 elif args.generator.find("MinGW Makefiles") != -1:
-    subprocess.check_call("mingw32-make package", shell=True)
+    subprocess.call("mingw32-make package", shell=True)
 else:
     print("Do not know how to run package and install target")
-subprocess.check_call("ctest -V --timeout 10 -C %s ." % (args.config), shell=True)
+subprocess.call("ctest -V --timeout 10 -C %s ." % (args.config), shell=True)
 
 
 for f in os.listdir(full_build_dir):
