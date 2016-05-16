@@ -101,6 +101,7 @@ void MoleculeLayoutMacrocyclesLattice::doLayout() {
          for (int i = 0; i < length; i++) {
             _positions[i] = Vec2f(0, r);
             _positions[i].rotate(alpha * i);
+            printf("%f %f\n", _positions[i].x, _positions[i].y);
          }
          return;
       }
