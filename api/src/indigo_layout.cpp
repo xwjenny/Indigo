@@ -49,7 +49,7 @@ CEXPORT int indigoLayout (int object)
 
          ml.make();
          std::vector<float> to_out;
-         /*
+         
          for (int i = mol.vertexBegin(); i != mol.vertexEnd(); i = mol.vertexNext(i)) {
              to_out.push_back(mol.getAtomXyz(i).x);
              to_out.push_back(mol.getAtomXyz(i).y);
@@ -85,7 +85,7 @@ CEXPORT int indigoLayout (int object)
              if (i & 1) printf("\n"); else printf(" ");
              
          }
-      */
+      
          if (obj.type != IndigoObject::SUBMOLECULE)
          {
             // Not for submolecule yet
