@@ -72,7 +72,7 @@ CEXPORT int indigoLayout (int object)
                      x *= 2;
                  }
              }
-             printf("%d ", deg);
+             /*printf("%d ", deg);
              if (sign > 0) printf("+"); else printf("-");
              
              printf("0");
@@ -82,7 +82,7 @@ CEXPORT int indigoLayout (int object)
                  x *= 2;
              }
              if (i & 1) printf("\n"); else printf(" ");
-             
+             */
          }
          if (obj.type != IndigoObject::SUBMOLECULE)
          {
