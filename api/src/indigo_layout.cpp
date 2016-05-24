@@ -47,7 +47,7 @@ CEXPORT int indigoLayout (int object)
          }
 
          ml.make();
-         std::vector<float> to_out;
+         //std::vector<float> to_out;
          /*
          for (int i = mol.vertexBegin(); i != mol.vertexEnd(); i = mol.vertexNext(i)) {
              to_out.push_back(mol.getAtomXyz(i).x);
