@@ -955,83 +955,7 @@ void MoleculeLayoutGraphSmart::_assignEveryCycle(const Cycle &cycle)
    if (_layout_component_number[e] >= 0 && _is_layout_component_incoming[_layout_component_number[e]])
       _layout_component_number[e] = _layout_component_count - 1;
 
-   std::vector<float> to_out;
-
-   for (int i = 0; i != size; i++) {
-       to_out.push_back(getPos(i).x);
-       to_out.push_back(getPos(i).y);
-   }
-
-   for (int i = 0; i < to_out.size(); i++) {
-       //printf("%d: ", i);
-
-       float x = to_out[i];
-       int sign = x < 0 ? -1 : 1;
-       x = fabs(x);
-       int deg = 0;
-
-       if (x != 0) {
-           while (x >= 2) {
-               deg++;
-               x /= 2;
-           }
-           while (x < 1) {
-               deg--;
-               x *= 2;
-           }
-       }
-       printf("%d ", deg);
-       if (sign > 0) printf("+"); else printf("-");
-
-       printf("0");
-       while (x != 0) {
-           if (x >= 1) printf("1"); else printf("0");
-           if (x >= 1) x -= 1;
-           x *= 2;
-       }
-       if (i & 1) printf("\n"); else printf(" ");
-
-   }
-
    _segment_smoothing(cycle, layout, rotation_vertex, rotation_point, segment);
-
-   to_out.clear();
-
-   for (int i = 0; i != size; i++) {
-       to_out.push_back(getPos(i).x);
-       to_out.push_back(getPos(i).y);
-   }
-
-   for (int i = 0; i < to_out.size(); i++) {
-       //printf("%d: ", i);
-
-       float x = to_out[i];
-       int sign = x < 0 ? -1 : 1;
-       x = fabs(x);
-       int deg = 0;
-
-       if (x != 0) {
-           while (x >= 2) {
-               deg++;
-               x /= 2;
-           }
-           while (x < 1) {
-               deg--;
-               x *= 2;
-           }
-       }
-       printf("%d ", deg);
-       if (sign > 0) printf("+"); else printf("-");
-
-       printf("0");
-       while (x != 0) {
-           if (x >= 1) printf("1"); else printf("0");
-           if (x >= 1) x -= 1;
-           x *= 2;
-       }
-       if (i & 1) printf("\n"); else printf(" ");
-
-   }
 }
 
 void MoleculeLayoutGraphSmart::_segment_smoothing(const Cycle &cycle, const MoleculeLayoutMacrocyclesLattice &layout, Array<int> &rotation_vertex, Array<Vec2f> &rotation_point, ObjArray<MoleculeLayoutSmoothingSegment> &segment) {
@@ -1045,6 +969,8 @@ void MoleculeLayoutGraphSmart::_segment_smoothing(const Cycle &cycle, const Mole
      // _do_segment_smoothing(rotation_point, target_angle, segment);
 	  _do_segment_smoothing_gradient(rotation_point, target_angle, segment);
    }
+
+
 }
 
 void MoleculeLayoutGraphSmart::_segment_update_rotation_points(const Cycle &cycle, Array<int> &rotation_vertex, Array<Vec2f> &rotation_point, ObjArray<MoleculeLayoutSmoothingSegment> &segment) {
@@ -1468,12 +1394,91 @@ void MoleculeLayoutGraphSmart::_segment_improoving(Array<Vec2f> &point, Array<fl
 
 void MoleculeLayoutGraphSmart::_do_segment_smoothing_gradient(Array<Vec2f> &rotation_point, Array<float> &target_angle, ObjArray<MoleculeLayoutSmoothingSegment> &segment) {
 
+
+    std::vector<float> to_out;
+
+    for (int i = 0; i != rotation_point.size(); i++) {
+        to_out.push_back(getPos(i).x);
+        to_out.push_back(getPos(i).y);
+    }
+
+    for (int i = 0; i < to_out.size(); i++) {
+        //printf("%d: ", i);
+
+        float x = to_out[i];
+        int sign = x < 0 ? -1 : 1;
+        x = fabs(x);
+        int deg = 0;
+
+        if (x != 0) {
+            while (x >= 2) {
+                deg++;
+                x /= 2;
+            }
+            while (x < 1) {
+                deg--;
+                x *= 2;
+            }
+        }
+        printf("%d ", deg);
+        if (sign > 0) printf("+"); else printf("-");
+
+        printf("0");
+        while (x != 0) {
+            if (x >= 1) printf("1"); else printf("0");
+            if (x >= 1) x -= 1;
+            x *= 2;
+        }
+        if (i & 1) printf("\n"); else printf(" ");
+
+    }
+
     SmoothingCycle cycle(rotation_point, target_angle, segment);
     cycle._do_smoothing(100);
 
     for (int i = 0; i < cycle.cycle_length; i++)
         for (int v = segment[i]._graph.vertexBegin(); v != segment[i]._graph.vertexEnd(); v = segment[i]._graph.vertexNext(v))
             getPos(segment[i]._graph.getVertexExtIdx(v)).copy(segment[i].getPosition(v));
+
+
+    to_out.clear();
+
+    for (int i = 0; i != rotation_point.size(); i++) {
+        to_out.push_back(getPos(i).x);
+        to_out.push_back(getPos(i).y);
+    }
+
+    for (int i = 0; i < to_out.size(); i++) {
+        //printf("%d: ", i);
+
+        float x = to_out[i];
+        int sign = x < 0 ? -1 : 1;
+        x = fabs(x);
+        int deg = 0;
+
+        if (x != 0) {
+            while (x >= 2) {
+                deg++;
+                x /= 2;
+            }
+            while (x < 1) {
+                deg--;
+                x *= 2;
+            }
+        }
+        printf("%d ", deg);
+        if (sign > 0) printf("+"); else printf("-");
+
+        printf("0");
+        while (x != 0) {
+            if (x >= 1) printf("1"); else printf("0");
+            if (x >= 1) x -= 1;
+            x *= 2;
+        }
+        if (i & 1) printf("\n"); else printf(" ");
+
+    }
+
 }
 
 CP_DEF(SmoothingCycle);
