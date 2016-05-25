@@ -48,43 +48,6 @@ CEXPORT int indigoLayout (int object)
          }
 
          ml.make();
-         std::vector<float> to_out;
-         
-         for (int i = mol.vertexBegin(); i != mol.vertexEnd(); i = mol.vertexNext(i)) {
-             to_out.push_back(mol.getAtomXyz(i).x);
-             to_out.push_back(mol.getAtomXyz(i).y);
-         }
-
-         for (int i = 0; i < to_out.size(); i++) {
-             //printf("%d: ", i);
-
-             float x = to_out[i];
-             int sign = x < 0 ? -1 : 1;
-             x = fabs(x);
-             int deg = 0;
-             
-             if (x != 0) {
-                 while (x >= 2) {
-                     deg++;
-                     x /= 2;
-                 }
-                 while (x < 1) {
-                     deg--;
-                     x *= 2;
-                 }
-             }
-             printf("%d ", deg);
-             if (sign > 0) printf("+"); else printf("-");
-             
-             printf("0");
-             while (x != 0) {
-                 if (x >= 1) printf("1"); else printf("0");
-                 if (x >= 1) x -= 1;
-                 x *= 2;
-             }
-             if (i & 1) printf("\n"); else printf(" ");
-             
-         }
       
          if (obj.type != IndigoObject::SUBMOLECULE)
          {
