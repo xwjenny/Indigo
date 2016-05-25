@@ -998,8 +998,8 @@ void MoleculeLayoutGraphSmart::_assignEveryCycle(const Cycle &cycle)
    to_out.clear();
 
    for (int i = 0; i != size; i++) {
-       to_out.push_back(layout.getPos(i).x);
-       to_out.push_back(layout.getPos(i).y);
+       to_out.push_back(getPos(i).x);
+       to_out.push_back(getPos(i).y);
    }
 
    for (int i = 0; i < to_out.size(); i++) {
