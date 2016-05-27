@@ -1491,21 +1491,24 @@ void SmoothingCycle::_do_smoothing(int iter_count) {
 
     float coef = 1.0;
     float multiplyer = __max(0.5, __min(0.999f, 1 - 10.0 / iter_count));
-    //print_float(coef, '\n');
-    //print_float(multiplyer, '\n');
-    //print_float(0.9, '\n');
     for (int i = 0; i < 100; i++, coef *= 0.9) {
-        //print_float(coef, '\n');
-        _gradient_step(coef, touching_segments);
+        _gradient_step(coef, touching_segments, !i);
     }
 }
 
-void SmoothingCycle::_gradient_step(float coef, Array<local_pair_ii>& touching_segments) {
+void SmoothingCycle::_gradient_step(float coef, Array<local_pair_ii>& touching_segments, bool flag) {
 	QS_DEF(Array<Vec2f>, change);
    change.clear_resize(cycle_length);
    for (int i = 0; i < cycle_length; i++) change[i] = Vec2f(0, 0);
 
-	float eps = 0.01;
+   if (flag) {
+       for (int i = 0; i < cycle_length; i++) {
+           print_float(change[i].x, ' ');
+           print_float(change[i].y, '\n');
+       }
+   }
+
+   float eps = 0.01;
    for (int i = 0; i < cycle_length; i++) {
        int i_1 = (i - 1 + cycle_length) % cycle_length; // i - 1
        int i1 = (i + 1) % cycle_length; // i + 1
@@ -1515,6 +1518,13 @@ void SmoothingCycle::_gradient_step(float coef, Array<local_pair_ii>& touching_s
 
       if (fabs(target_angle[i] - PI) > eps) change[i] += _get_angle_derivative(point[i] - point[i_1], point[i1] - point[i], PI - target_angle[i]);
 	}
+
+   if (flag) {
+       for (int i = 0; i < cycle_length; i++) {
+           print_float(change[i].x, ' ');
+           print_float(change[i].y, '\n');
+       }
+   }
 
    for (int i = 0; i < cycle_length; i++) for (int j = i + 2; j < cycle_length; j++) if (j - i != cycle_length - 1) if (!is_simple_component(i) && !is_simple_component(j)) {
        float current_dist = (get_center(i) - get_center(j)).length();
@@ -1529,14 +1539,23 @@ void SmoothingCycle::_gradient_step(float coef, Array<local_pair_ii>& touching_s
 		}
 	}
 
-	float len = 0;
+   if (flag) {
+       for (int i = 0; i < cycle_length; i++) {
+           print_float(change[i].x, ' ');
+           print_float(change[i].y, '\n');
+       }
+   }
+
+   float len = 0;
    for (int i = 0; i < cycle_length; i++) len += change[i].lengthSqr();
 	len = sqrt(len);
    if (len > 1) for (int i = 0; i < cycle_length; i++) change[i] /= len;
 
-   for (int i = 0; i < cycle_length; i++) {
-       print_float(change[i].x, ' ');
-       print_float(change[i].y, '\n');
+   if (flag) {
+       for (int i = 0; i < cycle_length; i++) {
+           print_float(change[i].x, ' ');
+           print_float(change[i].y, '\n');
+       }
    }
 
    for (int i = 0; i < cycle_length; i++) point[i] -= change[i] * coef;
