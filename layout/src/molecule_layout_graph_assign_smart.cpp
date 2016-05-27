@@ -1495,6 +1495,7 @@ void SmoothingCycle::_do_smoothing(int iter_count) {
     print_float(multiplyer, '\n');
     print_float(0.9, '\n');
     for (int i = 0; i < 100; i++, coef *= 0.9) {
+        print_float(coef, '\n');
         _gradient_step(coef, touching_segments);
     }
 }
