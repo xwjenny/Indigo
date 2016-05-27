@@ -1513,8 +1513,8 @@ void SmoothingCycle::_gradient_step(float coef, Array<local_pair_ii>& touching_s
        int i_1 = (i - 1 + cycle_length) % cycle_length; // i - 1
        int i1 = (i + 1) % cycle_length; // i + 1
 
-		change[i] += _get_len_derivative(point[i1] - point[i], get_length(i)) * (is_simple_component(i) ? 1 : 5);
-      change[i] += _get_len_derivative(point[i_1] - point[i], get_length(i_1)) * (is_simple_component(i_1) ? 1 : 5);
+       change[i] += _get_len_derivative(point[i1] - point[i], get_length(i), flag) * (is_simple_component(i) ? 1 : 5, flag);
+       change[i] += _get_len_derivative(point[i_1] - point[i], get_length(i_1), flag) * (is_simple_component(i_1) ? 1 : 5, flag);
 
       if (fabs(target_angle[i] - PI) > eps) change[i] += _get_angle_derivative(point[i] - point[i_1], point[i1] - point[i], PI - target_angle[i]);
 	}
@@ -1561,15 +1561,23 @@ void SmoothingCycle::_gradient_step(float coef, Array<local_pair_ii>& touching_s
    for (int i = 0; i < cycle_length; i++) point[i] -= change[i] * coef;
 }
 
-Vec2f SmoothingCycle::_get_len_derivative(Vec2f current_vector, float target_dist) {
+Vec2f SmoothingCycle::_get_len_derivative(Vec2f current_vector, float target_dist, bool flag) {
     float dist = current_vector.length();
     //dist = __max(dist, 0.01);
     float coef = 1;
+    if (flag) {
+        printf("!!! =)\n");
+        print_float(dist, ' ');
+        print_float(target_dist, ' ');
+    }
     if (dist >= target_dist) {
         coef = (dist / target_dist - 1) * 2 / target_dist / dist;
     }
     else {
         coef = -(target_dist / dist - 1) * 2 * target_dist / dist / dist / dist;
+    }
+    if (flag) {
+        print_float(coef, ' ');
     }
     return current_vector * -coef;
 }

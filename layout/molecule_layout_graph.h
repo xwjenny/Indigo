@@ -434,7 +434,7 @@ public:
 
     void _gradient_step(float coef, Array<local_pair_ii>& touching_segments, bool);
 
-    static Vec2f _get_len_derivative(Vec2f current_vector, float target_dist);
+    static Vec2f _get_len_derivative(Vec2f current_vector, float target_dist, bool);
     static Vec2f _get_len_derivative_simple(Vec2f current_vector, float target_dist);
     static Vec2f _get_angle_derivative(Vec2f left_point, Vec2f right_point, float target_angle);
 
