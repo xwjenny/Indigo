@@ -39,6 +39,34 @@ enum
    QUERY_BOND_ANY = 8
 };
 
+void print_float(float x, char c = ' ') {
+    int sign = x < 0 ? -1 : 1;
+    x = fabs(x);
+    int deg = 0;
+
+    if (x != 0) {
+        while (x >= 2) {
+            deg++;
+            x /= 2;
+        }
+        while (x < 1) {
+            deg--;
+            x *= 2;
+        }
+    }
+    printf("%d ", deg);
+    if (sign > 0) printf("+"); else printf("-");
+
+    printf("0");
+    while (x != 0) {
+        if (x >= 1) printf("1"); else printf("0");
+        if (x >= 1) x -= 1;
+        x *= 2;
+    }
+    printf("%c", c);
+}
+
+
 
 // Make relative coordinates of a component absolute
 
@@ -1395,7 +1423,7 @@ void MoleculeLayoutGraphSmart::_segment_improoving(Array<Vec2f> &point, Array<fl
 void MoleculeLayoutGraphSmart::_do_segment_smoothing_gradient(Array<Vec2f> &rotation_point, Array<float> &target_angle, ObjArray<MoleculeLayoutSmoothingSegment> &segment) {
 
 
-    std::vector<float> to_out;
+    /*std::vector<float> to_out;
 
     for (int i = 0; i != rotation_point.size(); i++) {
         to_out.push_back(getPos(i).x);
@@ -1403,35 +1431,8 @@ void MoleculeLayoutGraphSmart::_do_segment_smoothing_gradient(Array<Vec2f> &rota
     }
 
     for (int i = 0; i < to_out.size(); i++) {
-        //printf("%d: ", i);
-
-        float x = to_out[i];
-        int sign = x < 0 ? -1 : 1;
-        x = fabs(x);
-        int deg = 0;
-
-        if (x != 0) {
-            while (x >= 2) {
-                deg++;
-                x /= 2;
-            }
-            while (x < 1) {
-                deg--;
-                x *= 2;
-            }
-        }
-        printf("%d ", deg);
-        if (sign > 0) printf("+"); else printf("-");
-
-        printf("0");
-        while (x != 0) {
-            if (x >= 1) printf("1"); else printf("0");
-            if (x >= 1) x -= 1;
-            x *= 2;
-        }
-        if (i & 1) printf("\n"); else printf(" ");
-
-    }
+        print_float(to_out[i], " \n"[i & 1]);
+    }*/
 
     SmoothingCycle cycle(rotation_point, target_angle, segment);
     cycle._do_smoothing(100);
@@ -1441,7 +1442,7 @@ void MoleculeLayoutGraphSmart::_do_segment_smoothing_gradient(Array<Vec2f> &rota
             getPos(segment[i]._graph.getVertexExtIdx(v)).copy(segment[i].getPosition(v));
 
 
-    to_out.clear();
+    /*to_out.clear();
 
     for (int i = 0; i != rotation_point.size(); i++) {
         to_out.push_back(getPos(i).x);
@@ -1449,35 +1450,8 @@ void MoleculeLayoutGraphSmart::_do_segment_smoothing_gradient(Array<Vec2f> &rota
     }
 
     for (int i = 0; i < to_out.size(); i++) {
-        //printf("%d: ", i);
-
-        float x = to_out[i];
-        int sign = x < 0 ? -1 : 1;
-        x = fabs(x);
-        int deg = 0;
-
-        if (x != 0) {
-            while (x >= 2) {
-                deg++;
-                x /= 2;
-            }
-            while (x < 1) {
-                deg--;
-                x *= 2;
-            }
-        }
-        printf("%d ", deg);
-        if (sign > 0) printf("+"); else printf("-");
-
-        printf("0");
-        while (x != 0) {
-            if (x >= 1) printf("1"); else printf("0");
-            if (x >= 1) x -= 1;
-            x *= 2;
-        }
-        if (i & 1) printf("\n"); else printf(" ");
-
-    }
+        print_float(to_out[i], " \n"[i & 1]);
+    }*/
 
 }
 
@@ -1517,6 +1491,9 @@ void SmoothingCycle::_do_smoothing(int iter_count) {
 
     float coef = 1.0;
     float multiplyer = __max(0.5, __min(0.999f, 1 - 10.0 / iter_count));
+    print_float(coef, '\n');
+    print_float(multiplyer, '\n');
+    print_float(0.9, '\n');
     for (int i = 0; i < 100; i++, coef *= 0.9) {
         _gradient_step(coef, touching_segments);
     }
