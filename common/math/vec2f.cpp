@@ -154,8 +154,12 @@ float Vec2f::calc_angle(Vec2f a, Vec2f b) {
 	float cos = Vec2f::dot(a, b) / sqrt(a.lengthSqr() * b.lengthSqr());
 	if (cos > 1) cos = 1;
 	if (cos < -1) cos = -1;
+   printf("Cos: ");
+   print_float2(cos, '\n');
 	float angle = acos(cos);
-	if (Vec2f::cross(a, b) < 0) angle = -angle;
+   printf("Angle: ");
+   print_float2(angle, '\n');
+   if (Vec2f::cross(a, b) < 0) angle = -angle;
    printf("result: ");
    print_float2(angle);
 	return angle;
