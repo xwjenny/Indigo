@@ -13,12 +13,40 @@
  ***************************************************************************/
 
 #include "math/algebra.h"
+#include <stdio.h>
 
 using namespace indigo;
 
 IMPL_ERROR(Vec2f, "Vec2f");
 
-bool Vec2f::normalize ()
+void print_float2(float x, char c = ' ') {
+    int sign = x < 0 ? -1 : 1;
+    x = fabs(x);
+    int deg = 0;
+
+    if (x != 0) {
+        while (x >= 2) {
+            deg++;
+            x /= 2;
+        }
+        while (x < 1) {
+            deg--;
+            x *= 2;
+        }
+    }
+    printf("%d ", deg);
+    if (sign > 0) printf("+"); else printf("-");
+
+    printf("0");
+    while (x != 0) {
+        if (x >= 1) printf("1"); else printf("0");
+        if (x >= 1) x -= 1;
+        x *= 2;
+    }
+    printf("%c", c);
+}
+
+bool Vec2f::normalize()
 {
    float l = lengthSqr();
 
@@ -117,13 +145,19 @@ float Vec2f::tiltAngle2 ()
 }
 
 float Vec2f::calc_angle(Vec2f a, Vec2f b) {
-	a -= *this;
+    printf("\ncalc_angle !!\n");
+    print_float2(x); print_float2(y, '\n');
+    print_float2(a.x); print_float2(a.y, '\n');
+    print_float2(b.x); print_float2(b.y, '\n');
+    a -= *this;
 	b -= *this;
 	float cos = Vec2f::dot(a, b) / sqrt(a.lengthSqr() * b.lengthSqr());
 	if (cos > 1) cos = 1;
 	if (cos < -1) cos = -1;
 	float angle = acos(cos);
 	if (Vec2f::cross(a, b) < 0) angle = -angle;
+   printf("result: ");
+   print_float2(angle);
 	return angle;
 }
 

@@ -1018,11 +1018,11 @@ void MoleculeLayoutGraphSmart::_segment_calculate_target_angle(const MoleculeLay
       Vec2f p2 = layout.getPos(rotation_vertex[i]);
       Vec2f p3 = layout.getPos(rotation_vertex[(i + 1) % segments_count]);
       target_angle[i] = p2.calc_angle(p3, p1);
-      printf("\nBefore: ");
-      print_float(target_angle[i], '\n');
+      //printf("\nBefore: ");
+      //print_float(target_angle[i], '\n');
       while (target_angle[i] < 0) target_angle[i] += 2 * PI;
-      printf("\nAfter: ");
-      print_float(target_angle[i], '\n');
+      //printf("\nAfter: ");
+      //print_float(target_angle[i], '\n');
    }
 
    for (int i = 0; i < segments_count; i++)
@@ -1496,7 +1496,7 @@ void SmoothingCycle::_do_smoothing(int iter_count) {
     float coef = 1.0;
     float multiplyer = __max(0.5, __min(0.999f, 1 - 10.0 / iter_count));
     for (int i = 0; i < 100; i++, coef *= 0.9) {
-        _gradient_step(coef, touching_segments, !i);
+        _gradient_step(coef, touching_segments, 0);
     }
 }
 
