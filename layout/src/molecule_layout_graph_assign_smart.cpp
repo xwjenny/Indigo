@@ -1513,10 +1513,10 @@ void SmoothingCycle::_gradient_step(float coef, Array<local_pair_ii>& touching_s
        int i_1 = (i - 1 + cycle_length) % cycle_length; // i - 1
        int i1 = (i + 1) % cycle_length; // i + 1
 
-       change[i] += _get_len_derivative(point[i1] - point[i], get_length(i), flag) * (is_simple_component(i) ? 1 : 5, flag);
-       change[i] += _get_len_derivative(point[i_1] - point[i], get_length(i_1), flag) * (is_simple_component(i_1) ? 1 : 5, flag);
+       change[i] += _get_len_derivative(point[i1] - point[i], get_length(i), flag) * (is_simple_component(i) ? 1 : 5);
+       change[i] += _get_len_derivative(point[i_1] - point[i], get_length(i_1), flag) * (is_simple_component(i_1) ? 1 : 5);
 
-      if (fabs(target_angle[i] - PI) > eps) change[i] += _get_angle_derivative(point[i] - point[i_1], point[i1] - point[i], PI - target_angle[i]);
+      if (fabs(target_angle[i] - PI) > eps) change[i] += _get_angle_derivative(point[i] - point[i_1], point[i1] - point[i], PI - target_angle[i], flag);
 	}
 
    if (flag) {
@@ -1566,7 +1566,7 @@ Vec2f SmoothingCycle::_get_len_derivative(Vec2f current_vector, float target_dis
     //dist = __max(dist, 0.01);
     float coef = 1;
     if (flag) {
-        printf("!!! =)\n");
+        printf("\n len derivative:\n");
         print_float(dist, ' ');
         print_float(target_dist, ' ');
     }
@@ -1589,7 +1589,9 @@ Vec2f SmoothingCycle::_get_len_derivative_simple(Vec2f current_vector, float tar
     return current_vector * -coef;
 }
 
-Vec2f SmoothingCycle::_get_angle_derivative(Vec2f left_point, Vec2f right_point, float target_angle) {
+Vec2f SmoothingCycle::_get_angle_derivative(Vec2f left_point, Vec2f right_point, float target_angle, bool flag) {
+    if (flag)
+        printf("\nAngle derivative \n");
     float len1_sq = left_point.lengthSqr();
     float len2_sq = right_point.lengthSqr();
     float len12 = sqrt(len1_sq * len2_sq);
@@ -1616,6 +1618,12 @@ Vec2f SmoothingCycle::_get_angle_derivative(Vec2f left_point, Vec2f right_point,
             if (alpha > 0) alpha = PI - alpha;
             else alpha = -PI - alpha;
         }
+    }
+    if (flag) {
+        print_float(alphadv.x);
+        print_float(alphadv.y, '\n');
+        print_float(target_angle, '\n');
+        print_float(alpha, '\n');
     }
     //float diff = fabs(alpha) > fabs(target_angle) ? alpha / target_angle - 1 : target_angle / alpha - 1;
     //Vec2f result = fabs(alpha) > fabs(target_angle) ? alphadv / target_angle : alphadv * (- target_angle) / (alpha * alpha);
