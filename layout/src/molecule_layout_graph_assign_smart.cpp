@@ -1507,16 +1507,19 @@ void SmoothingCycle::_gradient_step(float coef, Array<local_pair_ii>& touching_s
            print_float(change[i].y, '\n');
        }
    }
-
+   if (flag) {
+       printf("\nTarget angles:\n");
+       for (int i = 0; i < target_angle.size(); i++) print_float(target_angle[i], '\n');
+   }
    float eps = 0.01;
    for (int i = 0; i < cycle_length; i++) {
        int i_1 = (i - 1 + cycle_length) % cycle_length; // i - 1
        int i1 = (i + 1) % cycle_length; // i + 1
 
-       change[i] += _get_len_derivative(point[i1] - point[i], get_length(i), flag) * (is_simple_component(i) ? 1 : 5);
-       change[i] += _get_len_derivative(point[i_1] - point[i], get_length(i_1), flag) * (is_simple_component(i_1) ? 1 : 5);
+       change[i] += _get_len_derivative(point[i1] - point[i], get_length(i), false) * (is_simple_component(i) ? 1 : 5);
+       change[i] += _get_len_derivative(point[i_1] - point[i], get_length(i_1), false) * (is_simple_component(i_1) ? 1 : 5);
 
-      if (fabs(target_angle[i] - PI) > eps) change[i] += _get_angle_derivative(point[i] - point[i_1], point[i1] - point[i], PI - target_angle[i], flag);
+      if (fabs(target_angle[i] - PI) > eps) change[i] += _get_angle_derivative(point[i] - point[i_1], point[i1] - point[i], PI - target_angle[i], false);
 	}
 
    if (flag) {
