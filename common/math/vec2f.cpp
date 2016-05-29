@@ -119,7 +119,7 @@ float Vec2f::tiltAngle2 ()
 float Vec2f::calc_angle(Vec2f a, Vec2f b) {
 	a -= *this;
 	b -= *this;
-	double cos = Vec2f::dot(a, b) / sqrt(a.lengthSqr() * b.lengthSqr());
+	float cos = Vec2f::dot(a, b) / sqrt(a.lengthSqr() * b.lengthSqr());
 	if (cos > 1) cos = 1;
 	if (cos < -1) cos = -1;
 	float angle = acos(cos);
