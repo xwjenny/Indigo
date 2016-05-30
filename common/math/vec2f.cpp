@@ -151,6 +151,11 @@ float Vec2f::calc_angle(Vec2f a, Vec2f b) {
     print_float2(b.x); print_float2(b.y, '\n');
     a -= *this;
 	b -= *this;
+   printf("Value: ");
+   print_float2(a.lengthSqr() * b.lengthSqr(), '\n');
+   printf("Square root: ");
+   print_float2(sqrt(a.lengthSqr() * b.lengthSqr()), '\n');
+
 	float cos = Vec2f::dot(a, b) / sqrt(a.lengthSqr() * b.lengthSqr());
 	if (cos > 1) cos = 1;
 	if (cos < -1) cos = -1;
