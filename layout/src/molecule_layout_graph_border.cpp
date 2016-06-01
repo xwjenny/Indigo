@@ -493,7 +493,7 @@ bool MoleculeLayoutGraphSmart::_isPointOutsideCycle(const Cycle &cycle, const Ve
     return abs(rotate_angle) < PI;
 }
 
-double MoleculeLayoutGraphSmart::_get_square() {
+float MoleculeLayoutGraphSmart::_get_square() {
 
     Cycle cycle;
     _getBorder(cycle);
