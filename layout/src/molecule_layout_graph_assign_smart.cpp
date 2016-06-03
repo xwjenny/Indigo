@@ -1439,7 +1439,7 @@ void MoleculeLayoutGraphSmart::_do_segment_smoothing_gradient(Array<Vec2f> &rota
     }*/
 
     SmoothingCycle cycle(rotation_point, target_angle, segment);
-    cycle._do_smoothing(100);
+    //cycle._do_smoothing(100);
 
     for (int i = 0; i < cycle.cycle_length; i++)
         for (int v = segment[i]._graph.vertexBegin(); v != segment[i]._graph.vertexEnd(); v = segment[i]._graph.vertexNext(v))
