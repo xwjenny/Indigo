@@ -977,7 +977,7 @@ void MoleculeLayoutGraphSmart::_assignEveryCycle(const Cycle &cycle)
       setEdgeType(cycle.getEdge(i), ELEMENT_DRAWN);
    }
 
-
+   print_float(sqrt(3.)); print_float(sqrt(12.), '\n');
    // 5. smoothing
    for (int e = edgeBegin(); e != edgeEnd(); e = edgeNext(e))
    if (_layout_component_number[e] >= 0 && _is_layout_component_incoming[_layout_component_number[e]])
