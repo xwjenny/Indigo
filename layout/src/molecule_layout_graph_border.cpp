@@ -500,12 +500,12 @@ float MoleculeLayoutGraphSmart::_get_square() {
 
     int len = cycle.vertexCount();
 
-    double sq = 0;
+    float sq = 0;
 
     for (int i = 1; i < len - 1; i++)
         sq += Vec2f::cross(getPos(cycle.getVertex(i)) - getPos(cycle.getVertex(0)), getPos(cycle.getVertex(i + 1)) - getPos(cycle.getVertex(0)));
 
-    return abs(sq / 2);
+    return fabs(sq / 2);
 }
 
 // Extract component border
