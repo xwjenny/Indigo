@@ -106,6 +106,8 @@ void MoleculeLayoutMacrocyclesLattice::doLayout() {
          return;
       }
    }
+   for (int i = 0; i < _vertex_weight.size(); i++) printf("%d ", _vertex_weight[i]);
+   printf("\n");
    calculate_rotate_length();
 
    rotate_cycle(rotate_length);
