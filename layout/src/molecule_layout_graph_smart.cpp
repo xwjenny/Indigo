@@ -470,6 +470,7 @@ _finish(finish)
       if (dist > _radius) _radius = dist;
    }
    _center = center;*/
+   _square = 0;
 }
 
 float MoleculeLayoutSmoothingSegment::calc_radius(Vec2f c) {
